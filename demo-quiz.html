@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KidVault Demo - Quiz</title>
+  <link rel="stylesheet" href="demo-style.css">
+</head>
+<body>
+  <div class="page">
+    <div class="nav">
+      <a href="demo-index.html">Home</a>
+      <a href="demo-parent.html">Parent View</a>
+      <a href="demo-kid.html">Kid View</a>
+      <a href="demo-quiz.html">Quiz Flow</a>
+      <a href="demo-reward.html">Reward Flow</a>
+    </div>
+
+    <div class="section">
+      <h1>Quiz Flow Preview</h1>
+      <div class="card">
+        <h3>Demo Quiz</h3>
+        <p class="muted small"><span id="quiz-subject">Maths</span> · <span id="quiz-grade">Class 5</span></p>
+        <p class="muted small" id="quiz-progress">Question 1 of 5</p>
+        <p id="quiz-question">Loading question...</p>
+        <div id="quiz-options"></div>
+        <div class="row">
+          <button class="button primary" id="submit-answer" type="button">Submit Answer</button>
+          <a class="button" href="demo-kid.html">Back</a>
+        </div>
+        <p class="muted hidden" id="quiz-result"></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>What This Shows</h2>
+      <p>Questions are grade-based, quick to answer, and part of a level-by-level challenge system that leads to a reward.</p>
+    </div>
+  </div>
+
+  <script src="demo-app.js"></script>
+  <script>
+    (function () {
+      const stateKey = 'kidvault-demo-state';
+      const defaultState = {
+        challenge: {
+          subject: 'Maths',
+          grade: 'Class 5',
+          reward: 100,
+          levels: 3
+        },
+        quizPassed: false,
+        score: 0,
+        earnedReward: 0,
+        requestSent: false,
+        rewardApproved: false
+      };
+
+      function getState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(stateKey) || 'null');
+          return saved ? { ...defaultState, ...saved, challenge: { ...defaultState.challenge, ...(saved.challenge || {}) } } : defaultState;
+        } catch (error) {
+          return defaultState;
+        }
+      }
+
+      function setState(nextState) {
+        localStorage.setItem(stateKey, JSON.stringify(nextState));
+      }
+
+      const state = getState();
+      document.getElementById('quiz-subject').textContent = state.challenge.subject;
+      document.getElementById('quiz-grade').textContent = state.challenge.grade;
+
+      const questions = [
+        {
+          text: 'A pizza is cut into 8 slices. Rohan eats 3 slices. What fraction did he eat?',
+          options: ['1/4', '3/8', '5/8', '1/3'],
+          answer: '3/8'
+        },
+        {
+          text: 'What is 1/2 + 1/4?',
+          options: ['3/4', '2/4', '1/4', '4/4'],
+          answer: '3/4'
+        },
+        {
+          text: 'Which planet is known as the Red Planet?',
+          options: ['Earth', 'Mars', 'Venus', 'Jupiter'],
+          answer: 'Mars'
+        },
+        {
+          text: 'If you save Rs 20 every week for 5 weeks, how much do you save?',
+          options: ['Rs 80', 'Rs 90', 'Rs 100', 'Rs 120'],
+          answer: 'Rs 100'
+        },
+        {
+          text: 'Which habit helps money grow over time?',
+          options: ['Spending everything', 'Saving regularly', 'Forgetting rewards', 'Skipping practice'],
+          answer: 'Saving regularly'
+        }
+      ];
+
+      let currentQuestion = 0;
+      let selectedAnswer = null;
+      let correctAnswers = 0;
+
+      const questionEl = document.getElementById('quiz-question');
+      const optionsEl = document.getElementById('quiz-options');
+      const progressEl = document.getElementById('quiz-progress');
+      const resultEl = document.getElementById('quiz-result');
+      const submitBtn = document.getElementById('submit-answer');
+
+      function renderQuestion() {
+        const question = questions[currentQuestion];
+        selectedAnswer = null;
+        resultEl.classList.add('hidden');
+        resultEl.textContent = '';
+        progressEl.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+        questionEl.textContent = question.text;
+        optionsEl.innerHTML = '';
+
+        question.options.forEach((option) => {
+          const button = document.createElement('button');
+          button.className = 'button option';
+          button.type = 'button';
+          button.textContent = option;
+          button.addEventListener('click', () => {
+            selectedAnswer = option;
+            Array.from(optionsEl.children).forEach((child) => {
+              child.style.outline = '';
+            });
+            button.style.outline = '2px solid #a5b4fc';
+          });
+          optionsEl.appendChild(button);
+        });
+
+        submitBtn.textContent = currentQuestion === questions.length - 1 ? 'Finish Quiz' : 'Submit Answer';
+      }
+
+      function finishQuiz() {
+        const score = Math.round((correctAnswers / questions.length) * 100);
+        let earnedReward = 0;
+
+        if (score >= 80) {
+          earnedReward = state.challenge.reward;
+        } else if (score >= 60) {
+          earnedReward = Math.round(state.challenge.reward * 0.7);
+        } else if (score >= 35) {
+          earnedReward = Math.round(state.challenge.reward * 0.4);
+        }
+
+        const nextState = {
+          ...state,
+          quizPassed: score >= 35,
+          score: score,
+          earnedReward: earnedReward,
+          requestSent: false,
+          rewardApproved: false
+        };
+        setState(nextState);
+
+        if (score < 35) {
+          resultEl.textContent = `You scored ${score}%. Less than 35% means you failed. Try again later.`;
+          resultEl.classList.remove('hidden');
+          submitBtn.textContent = 'Back to Kid View';
+          submitBtn.onclick = function () {
+            window.location.href = 'demo-kid.html';
+          };
+          return;
+        }
+
+        window.location.href = 'demo-reward.html';
+      }
+
+      submitBtn.addEventListener('click', () => {
+        if (!selectedAnswer) {
+          alert('Choose one answer first.');
+          return;
+        }
+
+        const question = questions[currentQuestion];
+        const optionButtons = Array.from(optionsEl.children);
+
+        optionButtons.forEach((button) => {
+          button.style.outline = '';
+          if (button.textContent === question.answer) {
+            button.classList.add('correct');
+          } else if (button.textContent === selectedAnswer && selectedAnswer !== question.answer) {
+            button.classList.add('wrong');
+          }
+          button.disabled = true;
+        });
+
+        if (selectedAnswer === question.answer) {
+          correctAnswers += 1;
+          resultEl.textContent = 'Correct answer.';
+        } else {
+          resultEl.textContent = `Wrong answer. Correct answer: ${question.answer}`;
+        }
+
+        resultEl.classList.remove('hidden');
+
+        if (currentQuestion === questions.length - 1) {
+          submitBtn.textContent = 'See Reward Result';
+          submitBtn.onclick = finishQuiz;
+          return;
+        }
+
+        submitBtn.textContent = 'Next Question';
+        submitBtn.onclick = function () {
+          currentQuestion += 1;
+          submitBtn.onclick = null;
+          renderQuestion();
+        };
+      });
+
+      renderQuestion();
+    })();
+  </script>
+</body>
+</html>
