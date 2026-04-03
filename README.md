@@ -61,6 +61,8 @@ Makes financial education fun, interactive, and addictive (in a good way).
 * config.py centralizes important settings such as database credentials, SECRET_KEY, and QUESTIONS_PER_LEVEL, so sensitive or reusable values are not hardcoded across files.
 
 # DEMO LINK
+https://kidvaultdemo.netlify.app/
+
 ## Key Features and Uniqueness
 * Gamified earn–learn system where kids answer quizzes and complete tasks to earn rewards
 * Topic-wise rewards: correct answers earn money set by parents for each specific topic
