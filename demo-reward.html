@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KidVault Demo - Reward</title>
+  <link rel="stylesheet" href="demo-style.css">
+</head>
+<body data-page="reward">
+  <div class="page">
+    <div class="nav">
+      <a href="demo-index.html">Home</a>
+      <a href="demo-parent.html">Parent View</a>
+      <a href="demo-kid.html">Kid View</a>
+      <a href="demo-quiz.html">Quiz Flow</a>
+      <a href="demo-reward.html">Reward Flow</a>
+    </div>
+
+    <div class="section">
+      <h1>Reward Preview</h1>
+      <div class="grid">
+        <div class="card">
+          <h3>Result</h3>
+          <p>Challenge completed successfully.</p>
+          <p>Quiz score: <strong id="reward-score">100%</strong></p>
+        </div>
+        <div class="card">
+          <h3>Reward</h3>
+          <div class="stat" id="reward-amount">Rs 100</div>
+          <p><span class="status" id="reward-status">Ready to send request</span></p>
+        </div>
+        <div class="card">
+          <h3>Money Lesson</h3>
+          <p>KidVault also introduces a simple saving vs spending lesson after earning.</p>
+          <p class="muted small" id="wallet-balance-copy"></p>
+          <div class="row">
+            <button class="button primary" id="send-request" type="button">Send Request To Parent</button>
+            <a class="button" href="demo-parent.html">Open Parent View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="demo-app.js"></script>
+</body>
+</html>
