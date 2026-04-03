@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KidVault Demo - Parent</title>
+  <link rel="stylesheet" href="demo-style.css">
+</head>
+<body data-page="parent">
+  <div class="page">
+    <div class="nav">
+      <a href="demo-index.html">Home</a>
+      <a href="demo-parent.html">Parent View</a>
+      <a href="demo-kid.html">Kid View</a>
+      <a href="demo-quiz.html">Quiz Flow</a>
+      <a href="demo-reward.html">Reward Flow</a>
+    </div>
+
+    <div class="section">
+      <h1>Parent Dashboard Preview</h1>
+      <p class="muted">A simple preview of how the parent side works.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Challenge Setup</h3>
+          <div class="stack">
+            <div>
+              <label for="challenge-subject">Subject</label>
+              <select class="select" id="challenge-subject">
+                <option>Maths</option>
+                <option>Science</option>
+                <option>GK</option>
+              </select>
+            </div>
+            <div>
+              <label for="challenge-grade">Grade</label>
+              <select class="select" id="challenge-grade">
+                <option>Class 4</option>
+                <option selected>Class 5</option>
+                <option>Class 6</option>
+              </select>
+            </div>
+            <div>
+              <label for="challenge-reward">Reward</label>
+              <input class="input" id="challenge-reward" type="number" min="10" step="10" value="100">
+            </div>
+            <div>
+              <label for="challenge-levels">Levels</label>
+              <input class="input" id="challenge-levels" type="number" min="1" max="5" value="3">
+            </div>
+            <div class="row">
+              <button class="button primary" id="create-challenge" type="button">Save Challenge</button>
+              <button class="button" id="parent-reset" type="button">Reset Demo</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Tracking</h3>
+          <p>Subject: <strong id="parent-subject">Maths</strong></p>
+          <p>Grade: <strong id="parent-grade">Class 5</strong></p>
+          <p>Reward: <strong id="parent-reward">Rs 100</strong></p>
+          <p>Levels: <strong id="parent-levels">3 levels</strong></p>
+        </div>
+        <div class="card">
+          <h3>Approval</h3>
+          <p><span class="status" id="parent-request-status">No reward request yet</span></p>
+          <p><span class="status" id="parent-approval-status">Waiting for approval</span></p>
+          <div class="row">
+            <button class="button primary" id="approve-reward" type="button">Approve Reward</button>
+            <a class="button" href="demo-kid.html">Open Kid Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="demo-app.js"></script>
+</body>
+</html>
