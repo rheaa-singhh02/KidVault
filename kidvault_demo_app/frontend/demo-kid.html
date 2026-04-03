@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KidVault Demo - Kid</title>
+  <link rel="stylesheet" href="demo-style.css">
+</head>
+<body data-page="kid">
+  <div class="page">
+    <div class="nav">
+      <a href="demo-index.html">Home</a>
+      <a href="demo-parent.html">Parent View</a>
+      <a href="demo-kid.html">Kid View</a>
+      <a href="demo-quiz.html">Quiz Flow</a>
+      <a href="demo-reward.html">Reward Flow</a>
+    </div>
+
+    <div class="section">
+      <h1>Kid Dashboard Preview</h1>
+      <p class="muted">A focused look at what the child sees.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Current Goal</h3>
+          <p><strong id="kid-subject">Maths</strong> for <strong id="kid-grade">Class 5</strong></p>
+          <p>Finish <span id="kid-levels">3 levels</span> to unlock <strong id="kid-reward">Rs 100</strong>.</p>
+        </div>
+        <div class="card">
+          <h3>Progress</h3>
+          <div class="stat">2 / 3</div>
+          <p>Levels completed</p>
+          <p><span class="status" id="kid-status">Challenge active</span></p>
+        </div>
+        <div class="card">
+          <h3>Motivation</h3>
+          <p>XP, badges, and reward progress make learning feel like a game.</p>
+          <a class="button primary" href="demo-quiz.html">Start Quiz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="demo-app.js"></script>
+</body>
+</html>

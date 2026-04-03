@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: kidvault-demo
+    env: python
+    rootDir: kidvault_demo_app/backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
